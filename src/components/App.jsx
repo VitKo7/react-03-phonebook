@@ -19,6 +19,27 @@ export default class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    // console.log('componentDidMount');
+
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    // console.log(parsedContacts);
+    if (parsedContacts) {
+      this.setState({ contacts: [...parsedContacts] });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    // console.log('componentDidUpdate');
+
+    if (this.state.contacts !== prevState.contacts) {
+      // console.log('обновился массив - contacts');
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   handleInput = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
@@ -30,7 +51,7 @@ export default class App extends Component {
     );
 
     if (entryCheck) {
-      alert(`This name or number already exists`);
+      alert(`This ${entryCheck.name} or ${entryCheck.number} already exists`);
     } else if (name.length === 0 || number.length === 0) {
       alert(`Please, fill in all the fields`);
     } else {
@@ -65,27 +86,6 @@ export default class App extends Component {
       };
     });
   };
-
-  componentDidMount() {
-    // console.log('componentDidMount');
-
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-
-    // console.log(parsedContacts);
-    if (parsedContacts) {
-      this.setState({ contacts: [...parsedContacts] });
-    }
-  }
-
-  componentDidUpdate(_, prevState) {
-    // console.log('componentDidUpdate');
-
-    if (this.state.contacts !== prevState.contacts) {
-      // console.log('обновился массив - contacts');
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
   // ---------------------------MARKUP---------------------------------
 
